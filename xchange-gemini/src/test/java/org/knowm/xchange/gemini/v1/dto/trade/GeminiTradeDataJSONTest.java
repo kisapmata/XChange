@@ -35,7 +35,7 @@ public class GeminiTradeDataJSONTest {
     assertEquals(new BigDecimal("0.0"), response.getAvgExecutionPrice());
     assertEquals("sell", response.getSide());
     assertEquals("exchange limit", response.getType());
-    assertEquals(new BigDecimal("1387061558.610016778"), response.getTimestamp());
+    assertEquals(1387061558123L, response.getTimestampms());
     assertTrue(response.isLive());
     assertFalse(response.isCancelled());
     assertFalse(response.getWasForced());
@@ -57,7 +57,7 @@ public class GeminiTradeDataJSONTest {
     assertEquals(new BigDecimal("0.0"), response.getAvgExecutionPrice());
     assertEquals("sell", response.getSide());
     assertEquals("exchange limit", response.getType());
-    assertEquals(new BigDecimal("1387061342.0"), response.getTimestamp());
+    assertEquals(1387061342345L, response.getTimestampms());
     assertFalse(response.isLive());
     assertTrue(response.isCancelled());
     assertFalse(response.getWasForced());
@@ -79,7 +79,7 @@ public class GeminiTradeDataJSONTest {
     assertEquals(new BigDecimal("0.0"), response.getAvgExecutionPrice());
     assertEquals("sell", response.getSide());
     assertEquals("exchange limit", response.getType());
-    assertEquals(new BigDecimal("1387061342.0"), response.getTimestamp());
+    assertEquals(1387061342123L, response.getTimestampms());
     assertTrue(response.isLive());
     assertFalse(response.isCancelled());
     assertFalse(response.getWasForced());
@@ -96,12 +96,12 @@ public class GeminiTradeDataJSONTest {
 
     assertEquals(new BigDecimal("854.01"), responses[0].getPrice());
     assertEquals(new BigDecimal("0.0072077"), responses[0].getAmount());
-    assertEquals(new BigDecimal("1387057315.0"), responses[0].getTimestamp());
+    assertEquals(1387057315124L, responses[0].getTimestampms());
     assertEquals("Sell", responses[0].getType());
 
     assertEquals(new BigDecimal("857.92"), responses[1].getPrice());
     assertEquals(new BigDecimal("0.0027923"), responses[1].getAmount());
-    assertEquals(new BigDecimal("1387057259.0"), responses[1].getTimestamp());
+    assertEquals(1387057259231L, responses[1].getTimestampms());
     assertEquals("Sell", responses[1].getType());
   }
 }

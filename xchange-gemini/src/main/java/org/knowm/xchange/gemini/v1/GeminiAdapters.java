@@ -190,7 +190,7 @@ public final class GeminiAdapters {
     OrderType orderType = trade.getType().equals("buy") ? OrderType.BID : OrderType.ASK;
     BigDecimal amount = trade.getAmount();
     BigDecimal price = trade.getPrice();
-    Date date = DateUtils.fromMillisUtc(trade.getTimestamp() * 1000L); // Gemini uses Unix timestamps
+    Date date = DateUtils.fromMillisUtc(trade.getTimestampms()); // Gemini Trade using timestampms
     final String tradeId = String.valueOf(trade.getTradeId());
     return new Trade(orderType, amount, currencyPair, price, date, tradeId);
   }
@@ -214,11 +214,11 @@ public final class GeminiAdapters {
     BigDecimal last = GeminiTicker.getLast_price();
     BigDecimal bid = GeminiTicker.getBid();
     BigDecimal ask = GeminiTicker.getAsk();
-    BigDecimal high = GeminiTicker.getHigh();
-    BigDecimal low = GeminiTicker.getLow();
-    BigDecimal volume = GeminiTicker.getVolume();
+    BigDecimal high = GeminiTicker.getAsk();
+    BigDecimal low = GeminiTicker.getBid();
+    BigDecimal volume = GeminiTicker.getVolume().getBtc();
 
-    Date timestamp = DateUtils.fromMillisUtc((long) (GeminiTicker.getTimestamp() * 1000L));
+    Date timestamp = DateUtils.fromMillisUtc(GeminiTicker.getVolume().getTimestamp());
 
     return new Ticker.Builder().currencyPair(currencyPair).last(last).bid(bid).ask(ask).high(high).low(low).volume(volume).timestamp(timestamp)
         .build();
@@ -261,7 +261,7 @@ public final class GeminiAdapters {
     for (GeminiOrderStatusResponse order : activeOrders) {
       OrderType orderType = order.getSide().equalsIgnoreCase("buy") ? OrderType.BID : OrderType.ASK;
       CurrencyPair currencyPair = adaptCurrencyPair(order.getSymbol());
-      Date timestamp = convertBigDecimalTimestampToDate(order.getTimestamp());
+      Date timestamp = new Date(order.getTimestampms()); // GeminiOrderStatusResponse uses timestampms
       limitOrders
           .add(new LimitOrder(orderType, order.getRemainingAmount(), currencyPair, String.valueOf(order.getId()), timestamp, order.getPrice()));
     }
@@ -276,7 +276,7 @@ public final class GeminiAdapters {
 
     for (GeminiTradeResponse trade : trades) {
       OrderType orderType = trade.getType().equalsIgnoreCase("buy") ? OrderType.BID : OrderType.ASK;
-      Date timestamp = convertBigDecimalTimestampToDate(trade.getTimestamp());
+      Date timestamp = new Date(trade.getTimestampms()); // GeminiTradeResponse uses timestampms
       final BigDecimal fee = trade.getFeeAmount() == null ? null : trade.getFeeAmount().negate();
       pastTrades.add(new UserTrade(orderType, trade.getAmount(), currencyPair, trade.getPrice(), timestamp, trade.getTradeId(), trade.getOrderId(),
           fee, Currency.getInstance(trade.getFeeCurrency())));

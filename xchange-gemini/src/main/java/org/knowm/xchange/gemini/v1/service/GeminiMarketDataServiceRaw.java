@@ -39,8 +39,8 @@ public class GeminiMarketDataServiceRaw extends GeminiBaseService {
   public GeminiTicker getGeminiTicker(String pair) throws IOException {
 
     try {
-      GeminiTicker GeminiTicker = Gemini.getTicker(pair);
-      return GeminiTicker;
+      GeminiTicker geminiTicker = Gemini.getTicker(pair);
+      return geminiTicker;
     } catch (GeminiException e) {
       throw new ExchangeException(e);
     }

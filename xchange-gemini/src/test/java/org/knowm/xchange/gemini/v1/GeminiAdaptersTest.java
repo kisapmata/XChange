@@ -97,7 +97,7 @@ public class GeminiAdaptersTest {
 
     for (int i = 0; i < responses.length; i++) {
       LimitOrder order = orders.getOpenOrders().get(i);
-      long expectedTimestampMillis = responses[i].getTimestamp().multiply(new BigDecimal(1000L)).longValue();
+      long expectedTimestampMillis = responses[i].getTimestampms();
       Order.OrderType expectedOrderType = responses[i].getSide().equalsIgnoreCase("buy") ? Order.OrderType.BID : Order.OrderType.ASK;
 
       assertEquals(String.valueOf(responses[i].getId()), order.getId());
@@ -124,14 +124,14 @@ public class GeminiAdaptersTest {
       BigDecimal avgExecutionPrice = price.add(new BigDecimal(0.25 * i));
       String side = i % 2 == 0 ? "buy" : "sell";
       String type = "limit";
-      BigDecimal timestamp = new BigDecimal("1414658239.41373654").add(new BigDecimal(i * (1 + 60 + 60 * 60 + 60 * 60 * 24)));
+      long timestampms = 1414658239123L + (i * (1 + 60 + 60 * 60 + 60 * 60 * 24));
       boolean isLive = false;
       boolean isCancelled = false;
       boolean wasForced = false;
       BigDecimal originalAmount = new BigDecimal("70");
       BigDecimal remainingAmount = originalAmount.subtract(new BigDecimal(i * 1));
       BigDecimal executedAmount = originalAmount.subtract(remainingAmount);
-      responses[i] = new GeminiOrderStatusResponse(i, SYMBOL, EXCHANGE, price, avgExecutionPrice, side, type, timestamp, isLive, isCancelled,
+      responses[i] = new GeminiOrderStatusResponse(i, SYMBOL, EXCHANGE, price, avgExecutionPrice, side, type, new BigDecimal(timestampms/1000), timestampms, isLive, isCancelled,
           wasForced, originalAmount, remainingAmount, executedAmount);
     }
 
@@ -147,7 +147,7 @@ public class GeminiAdaptersTest {
 
     for (int i = 0; i < responses.length; i++) {
       Trade trade = trades.getTrades().get(i);
-      long expectedTimestampMillis = responses[i].getTimestamp().multiply(new BigDecimal(1000L)).longValue();
+      long expectedTimestampMillis = responses[i].getTimestampms();
       Order.OrderType expectedOrderType = responses[i].getType().equalsIgnoreCase("buy") ? OrderType.BID : OrderType.ASK;
 
       assertEquals(responses[i].getPrice(), trade.getPrice());
@@ -174,13 +174,13 @@ public class GeminiAdaptersTest {
     for (int i = 0; i < responses.length; i++) {
       BigDecimal price = new BigDecimal(350L + i);
       BigDecimal amount = new BigDecimal(1L + i);
-      BigDecimal timestamp = new BigDecimal("1414658239.41373654").add(new BigDecimal(i * (1 + 60 + 60 * 60 + 60 * 60 * 24)));
+      long timestampms = 1414658239111L + (i * (1 + 60 + 60 * 60 + 60 * 60 * 24));
       String type = i % 2 == 0 ? "buy" : "sell";
       String tradeIdString = String.valueOf(tradeId++);
       String orderIdString = String.valueOf(orderId++);
       BigDecimal feeAmount = new BigDecimal(0L);
       String feeCurrency = "USD";
-      responses[i] = new GeminiTradeResponse(price, amount, timestamp, MARKET, type, tradeIdString, orderIdString, feeAmount, feeCurrency);
+      responses[i] = new GeminiTradeResponse(price, amount, new BigDecimal(timestampms/1000), timestampms, MARKET, type, tradeIdString, orderIdString, feeAmount, feeCurrency);
     }
 
     return responses;

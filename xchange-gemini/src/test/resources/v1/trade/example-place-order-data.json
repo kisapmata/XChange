@@ -6,7 +6,7 @@
   "avg_execution_price": "0.0",
   "side": "sell",
   "type": "exchange limit",
-  "timestamp": "1387061558.610016778",
+  "timestampms": "1387061558123",
   "is_live": true,
   "is_cancelled": false,
   "was_forced": false,

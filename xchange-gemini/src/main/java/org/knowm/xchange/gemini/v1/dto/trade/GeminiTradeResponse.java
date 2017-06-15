@@ -9,6 +9,7 @@ public class GeminiTradeResponse {
   private final BigDecimal price;
   private final BigDecimal amount;
   private final BigDecimal timestamp;
+  private final long timestampms;
   private final String exchange;
   private final String type;
   private final String tradeId;
@@ -19,24 +20,27 @@ public class GeminiTradeResponse {
   /**
    * Constructor
    *
-   * @param price
-   * @param amount
-   * @param timestamp
-   * @param exchange
-   * @param type
-   * @param tradeId
-   * @param orderId
-   * @param feeAmount
-   * @param feeCurrency
+   * @param price The price that the execution happened at
+   * @param amount The quantity that was executed
+   * @param timestamp The time that the trade happened in epoch seconds
+   * @param timestampms The time that the trade happened in milliseconds
+   * @param exchange Will always be "gemini"
+   * @param type Will be either "Buy" or "Sell", indicating the side of the original order
+   * @param tradeId Unique identifier for the trade
+   * @param orderId The order that this trade executed against
+   * @param feeAmount The amount charged
+   * @param feeCurrency Currency that the fee was paid in
    */
   public GeminiTradeResponse(@JsonProperty("price") final BigDecimal price, @JsonProperty("amount") final BigDecimal amount,
-      @JsonProperty("timestamp") final BigDecimal timestamp, @JsonProperty("exchange") final String exchange, @JsonProperty("type") final String type,
+      @JsonProperty("timestamp") final BigDecimal timestamp, @JsonProperty("timestampms") final long timestampms,
+      @JsonProperty("exchange") final String exchange, @JsonProperty("type") final String type,
       @JsonProperty("tid") final String tradeId, @JsonProperty("order_id") final String orderId,
       @JsonProperty("fee_amount") final BigDecimal feeAmount, @JsonProperty("fee_currency") String feeCurrency) {
 
     this.price = price;
     this.amount = amount;
     this.timestamp = timestamp;
+    this.timestampms = timestampms;
     this.exchange = exchange;
     this.type = type;
     this.tradeId = tradeId;
@@ -58,6 +62,11 @@ public class GeminiTradeResponse {
   public BigDecimal getTimestamp() {
 
     return timestamp;
+  }
+
+  public long getTimestampms() {
+
+    return timestampms;
   }
 
   public String getType() {
@@ -95,6 +104,8 @@ public class GeminiTradeResponse {
     builder.append(amount);
     builder.append(", timestamp=");
     builder.append(timestamp);
+    builder.append(", timestampms=");
+    builder.append(timestampms);
     builder.append(", exchange=");
     builder.append(exchange);
     builder.append(", type=");

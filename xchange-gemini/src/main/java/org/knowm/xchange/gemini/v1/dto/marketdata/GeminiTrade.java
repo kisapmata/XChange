@@ -9,6 +9,7 @@ public class GeminiTrade {
   private final BigDecimal price;
   private final BigDecimal amount;
   private final long timestamp;
+  private final long timestampms;
   private final String exchange;
   private final long tradeId;
   private final String type;
@@ -16,18 +17,22 @@ public class GeminiTrade {
   /**
    * Constructor
    *
-   * @param price
-   * @param amount
-   * @param timestamp
-   * @param exchange
-   * @param tradeId
+   * @param price The price the trade was executed at
+   * @param amount The amount that was traded
+   * @param timestamp The time that the trade was executed
+   * @param timestampms The time that the trade was executed in milliseconds
+   * @param exchange Will always be "gemini"
+   * @param tradeId The trade ID number
+   * @param type buy/sell/auction
    */
-  public GeminiTrade(@JsonProperty("price") BigDecimal price, @JsonProperty("amount") BigDecimal amount, @JsonProperty("timestamp") long timestamp,
-      @JsonProperty("exchange") String exchange, @JsonProperty("tid") long tradeId, @JsonProperty("type") String type) {
+  public GeminiTrade(@JsonProperty("price") BigDecimal price, @JsonProperty("amount") BigDecimal amount,
+                     @JsonProperty("timestamp") long timestamp, @JsonProperty("timestampms") long timestampms,
+                     @JsonProperty("exchange") String exchange, @JsonProperty("tid") long tradeId, @JsonProperty("type") String type) {
 
     this.price = price;
     this.amount = amount;
     this.timestamp = timestamp;
+    this.timestampms = timestampms;
     this.exchange = exchange;
     this.tradeId = tradeId;
     this.type = type;
@@ -46,6 +51,11 @@ public class GeminiTrade {
   public long getTimestamp() {
 
     return timestamp;
+  }
+
+  public long getTimestampms() {
+
+    return timestampms;
   }
 
   public String getExchange() {
@@ -73,6 +83,8 @@ public class GeminiTrade {
     builder.append(amount);
     builder.append(", timestamp=");
     builder.append(timestamp);
+    builder.append(", timestampms=");
+    builder.append(timestampms);
     builder.append(", exchange=");
     builder.append(exchange);
     builder.append(", tradeId=");

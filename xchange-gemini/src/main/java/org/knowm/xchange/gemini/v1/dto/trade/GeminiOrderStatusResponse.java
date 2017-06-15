@@ -14,6 +14,7 @@ public class GeminiOrderStatusResponse {
   private final String side;
   private final String type;
   private final BigDecimal timestamp;
+  private final long timestampms;
   private final boolean isLive;
   private final boolean isCancelled;
   private final boolean wasForced;
@@ -24,25 +25,26 @@ public class GeminiOrderStatusResponse {
   /**
    * Constructor
    *
-   * @param id
-   * @param symbol
-   * @param exchange
-   * @param price
-   * @param avgExecutionPrice
-   * @param side
-   * @param type
-   * @param timestamp
-   * @param isLive
-   * @param isCancelled
-   * @param wasForced
-   * @param originalAmount
-   * @param remainingAmount
-   * @param executedAmount
+   * @param id The order id
+   * @param symbol The symbol of the order
+   * @param exchange Will always be "gemini"
+   * @param price The price the order was issued at
+   * @param avgExecutionPrice The average price at which this order as been executed so far. 0 if the order has not been executed at all.
+   * @param side Either "buy" or "sell".
+   * @param type Description of the order
+   * @param timestamp The timestamp the order was submitted.
+   * @param timestampms The timestamp the order was submitted in milliseconds.
+   * @param isLive true if the order is active on the book (has remaining quantity and has not been canceled)
+   * @param isCancelled true if the order has been canceled. Note the spelling, "cancelled" instead of "canceled". This is for compatibility reasons.
+   * @param wasForced Will always be false.
+   * @param originalAmount The originally submitted amount of the order.
+   * @param remainingAmount The amount of the order that has not been filled.
+   * @param executedAmount The amount of the order that has been filled.
    */
   public GeminiOrderStatusResponse(@JsonProperty("id") int id, @JsonProperty("symbol") String symbol, @JsonProperty("exchange") String exchange,
       @JsonProperty("price") BigDecimal price, @JsonProperty("avg_execution_price") BigDecimal avgExecutionPrice, @JsonProperty("side") String side,
-      @JsonProperty("type") String type, @JsonProperty("timestamp") BigDecimal timestamp, @JsonProperty("is_live") boolean isLive,
-      @JsonProperty("is_cancelled") boolean isCancelled, @JsonProperty("was_forced") boolean wasForced,
+      @JsonProperty("type") String type, @JsonProperty("timestamp") BigDecimal timestamp, @JsonProperty("timestampms") long timestampms,
+      @JsonProperty("is_live") boolean isLive, @JsonProperty("is_cancelled") boolean isCancelled, @JsonProperty("was_forced") boolean wasForced,
       @JsonProperty("original_amount") BigDecimal originalAmount, @JsonProperty("remaining_amount") BigDecimal remainingAmount,
       @JsonProperty("executed_amount") BigDecimal executedAmount) {
 
@@ -54,6 +56,7 @@ public class GeminiOrderStatusResponse {
     this.side = side;
     this.type = type;
     this.timestamp = timestamp;
+    this.timestampms = timestampms;
     this.isLive = isLive;
     this.isCancelled = isCancelled;
     this.wasForced = wasForced;
@@ -117,6 +120,11 @@ public class GeminiOrderStatusResponse {
     return timestamp;
   }
 
+  public long getTimestampms() {
+
+    return timestampms;
+  }
+
   public int getId() {
 
     return id;
@@ -152,6 +160,8 @@ public class GeminiOrderStatusResponse {
     builder.append(type);
     builder.append(", timestamp=");
     builder.append(timestamp);
+    builder.append(", timestampms=");
+    builder.append(timestampms);
     builder.append(", isLive=");
     builder.append(isLive);
     builder.append(", isCancelled=");

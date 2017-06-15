@@ -48,7 +48,7 @@
             <artifactId>xchange-btce</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- XChange Bitstamp exchange support -->
+        <!-- XChange Bitcurex exchange support -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xchange-bitcurex</artifactId>
@@ -58,6 +58,12 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xchange-bitstamp</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- XChange Gemini exchange support -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xchange-gemini</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- XChange Bittrex exchange support -->
